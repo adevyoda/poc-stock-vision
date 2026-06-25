@@ -5,129 +5,208 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAP Stock Vision</title>
 <style>
-  :root{
-    --bg:#f5f7fb;--ink:#172033;--muted:#667085;--line:#d9e0ea;
-    --sap:#0a6ed1;--ok:#16825d;--warn:#b54708;--bad:#b42318;--panel:#fff;
-  }
-  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
-  header{background:#fff;border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-  h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px;margin-top:4px}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:13px;background:#fff}
-  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:8px}
-  main{max-width:1120px;margin:0 auto;padding:28px}
-  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:stretch;margin-bottom:20px}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px}
-  .headline{font-size:34px;line-height:1.08;margin:0 0 12px}.headline span{color:var(--sap)}
-  .copy{font-size:16px;line-height:1.5;color:#344054;margin:0}
-  .numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+  :root{--bg:#f4f7fb;--panel:#fff;--ink:#172033;--muted:#667085;--line:#d7dee8;--sap:#0a6ed1;--ok:#16825d;--warn:#b54708;--bad:#b42318}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
+  header{background:#fff;border-bottom:1px solid var(--line);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  h1,h2,h3{margin:0}.sub{font-size:13px;color:var(--muted);margin-top:4px}.pill{border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 12px;font-size:13px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:8px}
+  main{max-width:1280px;margin:0 auto;padding:22px;display:grid;gap:16px}
+  .grid{display:grid;gap:16px}.top{grid-template-columns:1.05fr .95fr}.three{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:1fr 1fr}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .headline{font-size:30px;line-height:1.12;margin-bottom:10px}.headline span{color:var(--sap)}.copy{color:#344054;line-height:1.5}
   .num{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fafcff}.num strong{display:block;font-size:28px}.num small{color:var(--muted)}
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
-  .step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;min-height:154px}
-  .step b{display:block;color:var(--sap);font-size:13px;margin-bottom:8px}.step h2{font-size:20px;margin:0 0 8px}.step p{margin:0;color:#475467;line-height:1.45}
-  .status{font-size:13px;color:var(--muted);margin-top:14px}
-  .inventory{display:grid;grid-template-columns:1.3fr .7fr;gap:20px}
-  table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}th{font-size:12px;text-transform:uppercase;color:var(--muted);letter-spacing:.04em}
-  .tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#e7f4ee;color:var(--ok)}.tag.low{background:#fef0c7;color:var(--warn)}
-  .feed{display:grid;gap:10px}.feed-item{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fafcff}.feed-item strong{font-family:Consolas,monospace;color:var(--sap)}
-  .empty{color:var(--muted);font-size:14px;padding:18px;text-align:center}
-  @media(max-width:850px){.hero,.steps,.inventory{grid-template-columns:1fr}.numbers{grid-template-columns:repeat(3,minmax(0,1fr))}.headline{font-size:28px}header{align-items:flex-start;flex-direction:column}}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}button,.btn{border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);padding:10px 12px;font-weight:600;cursor:pointer;text-decoration:none}button.primary{background:var(--sap);color:#fff;border-color:var(--sap)}button.danger{color:var(--bad)}button:disabled{opacity:.55;cursor:not-allowed}
+  video,canvas{width:100%;border-radius:8px;border:1px solid var(--line);background:#0d1726;display:block}canvas{display:none}
+  table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;text-transform:uppercase;color:var(--muted);letter-spacing:.04em}.tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#e7f4ee;color:var(--ok)}.tag.low{background:#fff1cc;color:var(--warn)}
+  label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}input{width:100%;border:1px solid var(--line);border-radius:7px;padding:10px;background:#fff;color:var(--ink);margin-top:6px}form{display:grid;grid-template-columns:1fr 1fr 1fr .6fr .5fr;gap:10px;align-items:end}
+  .feed{display:grid;gap:8px}.feed-item{border:1px solid var(--line);border-radius:8px;padding:11px;background:#fafcff}.feed-item strong{font-family:Consolas,monospace;color:var(--sap)}.muted{color:var(--muted)}.small{font-size:13px}.statusline{margin-top:10px;color:var(--muted);font-size:13px}
+  @media(max-width:900px){.top,.three,.two{grid-template-columns:1fr}form{grid-template-columns:1fr}.headline{font-size:25px}header{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
 <header>
   <div>
     <h1>SAP Stock Vision</h1>
-    <div class="sub">POC simples: imagem real, IA contando objetos, SAP MM recebendo estoque</div>
+    <div class="sub">Cadastro de materiais + camera real + YOLO + estoque SAP MM local</div>
   </div>
   <div class="pill"><span class="dot" id="dot"></span><span id="conn">Conectando</span></div>
 </header>
 
 <main>
-  <section class="hero">
+  <section class="grid top">
     <div class="panel">
-      <h2 class="headline">Da <span>imagem</span> para o <span>SAP</span>, sem digitação.</h2>
-      <p class="copy">A câmera olha para a mesa do almoxarifado. A visão computacional identifica produtos conhecidos, conta cada item e transforma a cena em uma atualização de estoque para o SAP MM.</p>
-      <div class="numbers">
-        <div class="num"><strong id="total">0</strong><small>itens vistos</small></div>
-        <div class="num"><strong id="materiais">0</strong><small>materiais SAP</small></div>
-        <div class="num"><strong id="alertas">0</strong><small>reposições</small></div>
+      <h2 class="headline">A POC agora roda em um fluxo unico: <span>cadastre</span>, <span>capture</span>, <span>atualize</span>.</h2>
+      <p class="copy">Cadastre somente os objetos que fazem sentido para estoque. A camera do navegador captura um frame, o Flask envia para o YOLO local e o estoque muda em tempo real.</p>
+      <div class="grid three" style="margin-top:16px">
+        <div class="num"><strong id="total">0</strong><small>itens em estoque</small></div>
+        <div class="num"><strong id="materiais">0</strong><small>materiais cadastrados</small></div>
+        <div class="num"><strong id="alertas">0</strong><small>reposicoes</small></div>
       </div>
     </div>
     <div class="panel">
-      <h2 style="margin:0 0 12px">Última leitura</h2>
-      <p class="copy" id="ultima-fonte">Aguardando a primeira imagem ou câmera.</p>
-      <div class="status" id="ultima-hora">Nenhum evento ainda.</div>
-      <div class="status" id="ultima-deteccao"></div>
+      <h2>Ultima leitura</h2>
+      <p class="copy" id="ultima-fonte" style="margin-top:10px">Aguardando camera ou imagem.</p>
+      <div class="statusline" id="ultima-hora">Nenhum evento ainda.</div>
+      <div class="statusline" id="ultima-deteccao"></div>
     </div>
   </section>
 
-  <section class="steps">
-    <div class="step">
-      <b>1. Entrada real</b>
-      <h2>Câmera ou foto</h2>
-      <p>Use uma webcam, vídeo ou arquivo de imagem. Não é cadastro manual: a POC parte de pixels reais.</p>
-      <div class="status" id="step-camera">Fonte: aguardando</div>
-    </div>
-    <div class="step">
-      <b>2. IA</b>
-      <h2>YOLO conta objetos</h2>
-      <p>O modelo detecta classes como garrafa, copo, livro, teclado e celular, e converte isso em quantidades.</p>
-      <div class="status" id="step-ai">Detecções: 0</div>
-    </div>
-    <div class="step">
-      <b>3. SAP MM</b>
-      <h2>Estoque atualizado</h2>
-      <p>O Flask recebe a contagem e, em modo real, envia o payload para o OData do SAP BTP ABAP.</p>
-      <div class="status" id="step-sap">Modo: mock</div>
-    </div>
-  </section>
-
-  <section class="inventory">
+  <section class="grid two">
     <div class="panel">
-      <h2 style="margin:0 0 12px">Estoque SAP MM</h2>
+      <h2>Camera / imagem</h2>
+      <p class="small muted">Use a camera do navegador ou envie uma foto. Tudo roda localmente no Flask.</p>
+      <video id="video" autoplay playsinline muted></video>
+      <canvas id="canvas"></canvas>
+      <div class="toolbar">
+        <button class="primary" id="startCam">Ligar camera</button>
+        <button id="capture" disabled>Capturar e detectar</button>
+        <button id="stopCam" disabled>Desligar</button>
+        <input id="file" type="file" accept="image/*" style="max-width:260px;margin:0">
+      </div>
+      <div class="statusline" id="vision-status">YOLO aguardando imagem.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Cadastrar material de estoque</h2>
+      <p class="small muted">A classe YOLO precisa bater com o nome detectado pelo modelo, por exemplo: bottle, cup, book, cell phone, keyboard, mouse.</p>
+      <form id="material-form">
+        <div><label>Classe YOLO</label><input name="yolo_class" placeholder="bottle" required></div>
+        <div><label>Descricao</label><input name="descricao" placeholder="Garrafa" required></div>
+        <div><label>MATNR SAP</label><input name="sap_matnr" placeholder="MAT-001" required></div>
+        <div><label>Unidade</label><input name="unidade" value="UN" required></div>
+        <div><label>Minimo</label><input name="minimo" type="number" value="1" min="0"></div>
+        <button class="primary" type="submit">Salvar</button>
+      </form>
+      <div class="statusline" id="form-status"></div>
+    </div>
+  </section>
+
+  <section class="grid two">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
+        <h2>Materiais cadastrados</h2>
+        <button class="danger" id="reset">Zerar estoque</button>
+      </div>
       <table>
-        <thead><tr><th>Material</th><th>MATNR</th><th>Qtd</th><th>Status</th></tr></thead>
-        <tbody id="tbody"><tr><td colspan="4" class="empty">Aguardando contagem...</td></tr></tbody>
+        <thead><tr><th>Material</th><th>Classe YOLO</th><th>MATNR</th><th>Qtd</th><th>Status</th><th></th></tr></thead>
+        <tbody id="tbody"><tr><td colspan="6" class="muted">Carregando...</td></tr></tbody>
       </table>
     </div>
     <div class="panel">
-      <h2 style="margin:0 0 12px">Documentos gerados</h2>
-      <div class="feed" id="feed"><div class="empty">Nenhum documento ainda.</div></div>
+      <h2>Documentos SAP MM</h2>
+      <div class="feed" id="feed"><div class="muted">Nenhum documento ainda.</div></div>
     </div>
   </section>
 </main>
 
 <script>
+let estadoAtual = null;
+let stream = null;
+const $ = id => document.getElementById(id);
 function esc(v){return String(v ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
 function atualizar(est){
-  const mats = Object.entries(est.materiais || {}).filter(([k]) => k !== 'person');
+  estadoAtual = est;
+  const mats = Object.entries(est.materiais || {});
   const baixos = mats.filter(([,m]) => m.minimo > 0 && m.qtd < m.minimo).length;
-  document.getElementById('total').textContent = est.total_itens || 0;
-  document.getElementById('materiais').textContent = mats.length;
-  document.getElementById('alertas').textContent = baixos;
-  document.getElementById('step-sap').textContent = 'Modo: ' + (est.sap_mode || 'mock');
-
+  $('total').textContent = est.total_itens || 0;
+  $('materiais').textContent = mats.length;
+  $('alertas').textContent = baixos;
   const leitura = est.ultima_leitura || {};
-  document.getElementById('ultima-fonte').textContent = leitura.fonte || 'Aguardando a primeira imagem ou câmera.';
-  document.getElementById('ultima-hora').textContent = leitura.timestamp ? 'Lida em ' + new Date(leitura.timestamp).toLocaleString('pt-BR') + ' · ' + leitura.local : 'Nenhum evento ainda.';
-  const det = Object.entries(leitura.deteccoes || {}).map(([k,v]) => `${k}: ${v}`).join(' · ');
-  document.getElementById('ultima-deteccao').textContent = det ? 'IA detectou: ' + det : '';
-  document.getElementById('step-camera').textContent = 'Fonte: ' + (leitura.fonte || 'aguardando');
-  document.getElementById('step-ai').textContent = 'Detecções: ' + Object.keys(leitura.deteccoes || {}).length;
+  $('ultima-fonte').textContent = leitura.fonte || 'Aguardando camera ou imagem.';
+  $('ultima-hora').textContent = leitura.timestamp ? 'Lida em ' + new Date(leitura.timestamp).toLocaleString('pt-BR') + ' - ' + leitura.local : 'Nenhum evento ainda.';
+  const det = Object.entries(leitura.deteccoes || {}).map(([k,v]) => `${k}: ${v}`).join(' | ');
+  $('ultima-deteccao').textContent = det ? 'YOLO detectou: ' + det : '';
 
-  document.getElementById('tbody').innerHTML = mats.map(([classe,m]) => {
+  $('tbody').innerHTML = mats.map(([classe,m]) => {
     const low = m.minimo > 0 && m.qtd < m.minimo;
-    return `<tr><td>${esc(m.descricao)}<br><small>${esc(classe)}</small></td><td>${esc(m.sap_matnr)}</td><td><strong>${m.qtd}</strong> ${esc(m.unidade)}</td><td><span class="tag ${low?'low':''}">${low?'Repor':'OK'}</span></td></tr>`;
+    return `<tr>
+      <td><strong>${esc(m.descricao)}</strong><br><span class="small muted">min. ${m.minimo} ${esc(m.unidade)}</span></td>
+      <td><code>${esc(classe)}</code></td>
+      <td>${esc(m.sap_matnr)}</td>
+      <td><strong>${m.qtd}</strong> ${esc(m.unidade)}</td>
+      <td><span class="tag ${low?'low':''}">${low?'Repor':'OK'}</span></td>
+      <td><button class="danger" onclick="remover('${esc(classe)}')">Remover</button></td>
+    </tr>`;
   }).join('');
 
   const hist = est.historico || [];
-  document.getElementById('feed').innerHTML = hist.length ? hist.map(h => `<div class="feed-item"><strong>${esc(h.documento)}</strong><br>${esc(h.local)} · ${h.itens} material(is) · ${esc(h.hora)}</div>`).join('') : '<div class="empty">Nenhum documento ainda.</div>';
+  $('feed').innerHTML = hist.length ? hist.map(h => `<div class="feed-item"><strong>${esc(h.documento)}</strong><br>${esc(h.local)} - ${h.itens} material(is) - ${esc(h.hora)}</div>`).join('') : '<div class="muted">Nenhum documento ainda.</div>';
 }
+
 function conectar(){
   const es = new EventSource('/api/events');
-  es.onopen = () => {document.getElementById('conn').textContent='Ao vivo';document.getElementById('dot').style.background='var(--ok)'};
+  es.onopen = () => {$('conn').textContent='Ao vivo';$('dot').style.background='var(--ok)'};
   es.onmessage = e => {try{atualizar(JSON.parse(e.data))}catch(_){}};
-  es.onerror = () => {document.getElementById('conn').textContent='Reconectando';document.getElementById('dot').style.background='var(--bad)';es.close();setTimeout(conectar,2500)};
+  es.onerror = () => {$('conn').textContent='Reconectando';$('dot').style.background='var(--bad)';es.close();setTimeout(conectar,2500)};
 }
+
+async function salvarMaterial(ev){
+  ev.preventDefault();
+  const data = Object.fromEntries(new FormData(ev.currentTarget).entries());
+  data.minimo = Number(data.minimo || 0);
+  const res = await fetch('/api/materials', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  const body = await res.json();
+  $('form-status').textContent = body.mensagem || (res.ok ? 'Material salvo.' : 'Erro ao salvar.');
+  if(res.ok) ev.currentTarget.reset();
+}
+
+async function remover(classe){
+  await fetch('/api/materials/' + encodeURIComponent(classe), {method:'DELETE'});
+}
+
+async function resetar(){
+  await fetch('/api/sap/mm/stock/reset', {method:'POST'});
+}
+
+async function startCamera(){
+  stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}, audio:false});
+  $('video').srcObject = stream;
+  $('capture').disabled = false;
+  $('stopCam').disabled = false;
+  $('startCam').disabled = true;
+  $('vision-status').textContent = 'Camera ligada. Aponte para os objetos e capture.';
+}
+
+function stopCamera(){
+  if(stream) stream.getTracks().forEach(t => t.stop());
+  stream = null;
+  $('video').srcObject = null;
+  $('capture').disabled = true;
+  $('stopCam').disabled = true;
+  $('startCam').disabled = false;
+  $('vision-status').textContent = 'Camera desligada.';
+}
+
+async function enviarBlob(blob){
+  $('vision-status').textContent = 'Analisando imagem com YOLO...';
+  const fd = new FormData();
+  fd.append('image', blob, 'frame.jpg');
+  const res = await fetch('/api/vision/analyze', {method:'POST', body:fd});
+  const body = await res.json();
+  if(!res.ok) throw new Error(body.mensagem || 'Erro no YOLO');
+  const det = Object.entries(body.deteccoes || {}).map(([k,v]) => `${k}: ${v}`).join(' | ') || 'nenhum material cadastrado';
+  $('vision-status').textContent = 'Detectado: ' + det;
+}
+
+async function capturar(){
+  const video = $('video'), canvas = $('canvas');
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+  canvas.toBlob(blob => enviarBlob(blob).catch(e => $('vision-status').textContent = e.message), 'image/jpeg', .9);
+}
+
+async function arquivo(ev){
+  const file = ev.target.files[0];
+  if(file) await enviarBlob(file);
+}
+
+$('material-form').addEventListener('submit', salvarMaterial);
+$('reset').addEventListener('click', resetar);
+$('startCam').addEventListener('click', () => startCamera().catch(e => $('vision-status').textContent = 'Nao consegui abrir a camera: ' + e.message));
+$('stopCam').addEventListener('click', stopCamera);
+$('capture').addEventListener('click', capturar);
+$('file').addEventListener('change', ev => arquivo(ev).catch(e => $('vision-status').textContent = e.message));
 conectar();
 </script>
 </body>

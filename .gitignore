@@ -4,6 +4,7 @@ __pycache__/
 *.py[cod]
 yolov8n.pt
 deteccao_resultado.jpg
+stock_vision.db
 .pytest_cache/
 .ruff_cache/
 dist/

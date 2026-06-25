@@ -6,12 +6,12 @@ POC simples para explicar uma ideia forte:
 
 ## Historia da demo
 
-1. Coloque objetos em uma mesa: garrafa, copo, livro, celular, teclado ou mouse.
-2. Rode a visao computacional com uma foto, video ou webcam.
-3. O YOLO identifica os objetos e gera uma contagem.
-4. O Flask recebe essa contagem em `/api/sap/mm/stock/update`.
-5. O dashboard muda em tempo real.
-6. Com `SAP_MODE=real`, o mesmo payload e enviado para o OData do SAP BTP ABAP.
+1. Cadastre somente os materiais que fazem sentido para estoque.
+2. Abra a camera pelo dashboard ou envie uma foto.
+3. O Flask recebe a imagem e roda YOLO localmente.
+4. A contagem atualiza a base SQLite local e o dashboard em tempo real.
+5. O mesmo fluxo gera um documento mock SAP MM.
+6. Com `SAP_MODE=real`, o payload e enviado para o OData do SAP BTP ABAP.
 
 ## Rodar em 2 minutos
 
@@ -28,7 +28,8 @@ Abra:
 http://localhost:5001
 ```
 
-Em outro terminal, escolha um modo:
+Na tela, use `Cadastrar material de estoque`, `Ligar camera` e `Capturar e detectar`.
+Tambem existe o modo terminal:
 
 ```powershell
 # Demo automatica, sem camera
@@ -57,6 +58,9 @@ python vision.py --image C:\caminho\foto.jpg --api https://sap.fleop.com.br/pocc
 
 Real:
 
+- base SQLite local em `stock_vision.db`;
+- cadastro/remocao de materiais de estoque;
+- camera no navegador via `getUserMedia`;
 - leitura de imagem, video ou webcam;
 - deteccao com YOLOv8;
 - contagem enviada por HTTP;
@@ -127,4 +131,19 @@ Content-Type: application/json
     "book": 2
   }
 }
+```
+
+## Endpoints locais da POC
+
+```text
+GET    /                         dashboard
+GET    /health                   status da API
+GET    /api/sap/mm/stock         estoque atual
+POST   /api/sap/mm/stock/update  atualiza contagem
+POST   /api/sap/mm/stock/reset   zera estoque e historico
+GET    /api/materials            lista materiais cadastrados
+POST   /api/materials            cria/atualiza material
+DELETE /api/materials/<classe>   remove material do estoque
+POST   /api/vision/analyze       recebe foto/frame e roda YOLO local
+GET    /api/events               eventos em tempo real para dashboard
 ```

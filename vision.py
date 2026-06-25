@@ -121,8 +121,7 @@ def modo_imagem(path):
     print("[YOLO] Imagem analisada:", path)
     print("[YOLO] Detectado:", contagem_filtrada or "nenhum material mapeado")
 
-    if contagem_filtrada:
-        enviar_para_sap(contagem_filtrada, local="Almoxarifado-01", fonte=f"imagem:{path}")
+    enviar_para_sap(contagem_filtrada, local="Almoxarifado-01", fonte=f"imagem:{path}")
 
     annotated = results[0].plot()
     output = "deteccao_resultado.jpg"
@@ -171,7 +170,7 @@ def modo_webcam(source=0):
 
         # Envia para SAP a cada INTERVALO segundos
         agora = time.time()
-        if agora - ultimo_envio >= INTERVALO and contagem_filtrada:
+        if agora - ultimo_envio >= INTERVALO:
             threading.Thread(
                 target=enviar_para_sap,
                 args=(contagem_filtrada,),
