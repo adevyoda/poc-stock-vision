@@ -1,0 +1,12 @@
+managed implementation in class zbp_poc_stock_vision unique;
+strict ( 2 );
+
+define behavior for ZPOC_STOCK_VISION alias StockVision
+persistent table zpoc_stock_t
+lock master
+authorization master ( instance )
+{
+  create;
+  update;
+  delete;
+}

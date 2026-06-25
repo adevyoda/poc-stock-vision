@@ -1,0 +1,4 @@
+@EndUserText.label: 'Stock Vision OData service'
+define service ZPOC_STOCK_VISION_SRVD {
+  expose ZPOC_STOCK_VISION as StockVision;
+}

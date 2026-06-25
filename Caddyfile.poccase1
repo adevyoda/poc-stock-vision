@@ -1,0 +1,12 @@
+sap.fleop.com.br {
+  encode zstd gzip
+
+  handle /poccase1* {
+    uri strip_prefix /poccase1
+    reverse_proxy poc-stock-vision:5001
+  }
+
+  handle {
+    respond "sap.fleop.com.br - em construcao" 200
+  }
+}

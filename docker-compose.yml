@@ -1,0 +1,29 @@
+name: poc-stock-vision
+
+services:
+  poc-stock-vision:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: poc-stock-vision:latest
+    container_name: poc-stock-vision
+    restart: unless-stopped
+    env_file:
+      - .env
+    expose:
+      - "5001"
+    ports:
+      - "5001:5001"
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/health')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+networks:
+  proxy:
+    name: web-proxy
+    external: true

@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+yolov8n.pt
+deteccao_resultado.jpg
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
