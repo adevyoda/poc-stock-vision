@@ -37,11 +37,20 @@ python vision.py --demo
 # Imagem real
 python vision.py --image C:\caminho\foto.jpg
 
+# Imagem real apontando explicitamente para API local
+python vision.py --image C:\caminho\foto.jpg --api http://127.0.0.1:5001/api/sap/mm/stock/update
+
 # Webcam real
 python vision.py
 
 # Video real
 python vision.py --video C:\caminho\video.mp4
+```
+
+Para enviar a contagem para a URL publica atual no Worker da Fleop:
+
+```powershell
+python vision.py --image C:\caminho\foto.jpg --api https://sap.fleop.com.br/poccase1/api/sap/mm/stock/update
 ```
 
 ## O que e real e o que e mock
@@ -52,11 +61,13 @@ Real:
 - deteccao com YOLOv8;
 - contagem enviada por HTTP;
 - dashboard em tempo real via SSE;
-- payload pronto para SAP OData.
+- payload pronto para SAP OData;
+- endpoint publico em `https://sap.fleop.com.br/poccase1` via Cloudflare Worker.
 
 Mock enquanto `SAP_MODE=mock`:
 
 - a atualizacao SAP fica em memoria no Flask, simulando MM.
+- o Worker publico responde em modo `worker-mock` ate a VPS/Flask real ser conectada.
 
 Real quando `SAP_MODE=real`:
 

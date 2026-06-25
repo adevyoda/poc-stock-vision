@@ -191,7 +191,9 @@ if __name__ == '__main__':
     parser.add_argument('--image', type=str, help='Arquivo de imagem')
     parser.add_argument('--demo', action='store_true', help='Modo demo sem câmera')
     parser.add_argument('--cam', type=int, default=0, help='Câmera (padrão: 0)')
+    parser.add_argument('--api', type=str, default=SAP_API, help='Endpoint de atualização SAP/API')
     args = parser.parse_args()
+    SAP_API = args.api
 
     if args.demo:
         modo_demo()

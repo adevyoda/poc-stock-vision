@@ -91,14 +91,20 @@ def atualizar_estoque():
     deteccoes = dados.get('deteccoes', {})
     local = dados.get('local', WAREHOUSE_DEFAULT)
     fonte = dados.get('fonte', 'visao_computacional')
+    snapshot_completo = dados.get('snapshot_completo', True)
 
     doc_sap = f"INV{int(time.time())}"
     itens_atualizados = []
     alertas_novos = []
     erros_sap = []
 
-    for classe, qtd in deteccoes.items():
+    classes_para_atualizar = set(deteccoes)
+    if snapshot_completo:
+        classes_para_atualizar.update(estoque['materiais'])
+
+    for classe in classes_para_atualizar:
         if classe in estoque['materiais']:
+            qtd = deteccoes.get(classe, 0)
             mat = estoque['materiais'][classe]
             qtd_anterior = mat['qtd']
             mat['qtd'] = int(qtd)
